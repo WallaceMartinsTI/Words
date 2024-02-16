@@ -21,7 +21,7 @@ https://github.com/WallaceMartinsTI/words/assets/58310961/4019d226-a683-430a-a64
 - Busca de informações de palavras em Inglês
 - Tradução para Português da palavra e sua definição
 - Áudio da palavra em inglês para ouvir a pronúncia
-- Consumo de API com [Words API](https://www.wordsapi.com/)
+- Consumo da [Words API](https://www.wordsapi.com/) com [Retrofit](https://square.github.io/retrofit/)
 
 ## 📄 Licença
 
