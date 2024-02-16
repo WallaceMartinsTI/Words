@@ -18,7 +18,9 @@ import retrofit2.Response
 import com.wcsm.words.api.GoogleTranslationService
 import kotlinx.coroutines.runBlocking
 import android.speech.tts.TextToSpeech
-import com.wcsm.words.utils.ViewsVisibilityOptions
+import android.text.Editable
+import android.text.TextWatcher
+import com.wcsm.words.utils.ShowHideOptions
 
 class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
@@ -52,13 +54,15 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tts = TextToSpeech(this, this)
         enWord = ""
 
+        watchWordClearText()
+
         binding.btnSearch.setOnClickListener {
             showHideLoading(true)
-            showHideViewItens(ViewsVisibilityOptions.HIDE)
+            showHideViewItens(ShowHideOptions.HIDE)
             binding.btnSearch.isEnabled = false
             val inputtedWord = binding.wordEditText.text.toString()
             if(validateWord(inputtedWord.lowercase())) {
-                hideKeyboard()
+                handleKeyboardVisibility(ShowHideOptions.HIDE)
                 getWordData(inputtedWord)
             } else {
                 showHideLoading(false)
@@ -187,7 +191,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         fillSyllablesSection()
         fillPronunciationSection(result.pronunciation.all)
 
-        showHideViewItens(ViewsVisibilityOptions.SHOW)
+        showHideViewItens(ShowHideOptions.SHOW)
         showHideLoading(false)
         binding.btnSearch.isEnabled = true
     }
@@ -196,9 +200,22 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
 
-    private fun showHideViewItens(option: ViewsVisibilityOptions) {
+    private fun watchWordClearText() {
+        binding.wordEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+                handleKeyboardVisibility(ShowHideOptions.SHOW)
+            }
+
+        })
+    }
+
+    private fun showHideViewItens(option: ShowHideOptions) {
         when(option) {
-            ViewsVisibilityOptions.SHOW -> {
+            ShowHideOptions.SHOW -> {
                 with(binding) {
                     tvWordEn.visibility = View.VISIBLE
                     tvWordPt.visibility = View.VISIBLE
@@ -214,7 +231,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     fabPlayPronunciation.visibility = View.VISIBLE
                 }
             }
-            ViewsVisibilityOptions.HIDE -> {
+            ShowHideOptions.HIDE -> {
                 with(binding) {
                     tvWordEn.visibility = View.INVISIBLE
                     tvWordPt.visibility = View.INVISIBLE
@@ -242,11 +259,16 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
     }
 
-    private fun hideKeyboard() {
+    private fun handleKeyboardVisibility(option: ShowHideOptions) {
         val view = currentFocus
         if(view != null) {
             val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+
+            if(option == ShowHideOptions.HIDE) {
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            } else {
+                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }
         }
     }
 

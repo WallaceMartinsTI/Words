@@ -1,6 +1,6 @@
 package com.wcsm.words.utils
 
-enum class ViewsVisibilityOptions {
+enum class ShowHideOptions {
     SHOW,
     HIDE
 }
