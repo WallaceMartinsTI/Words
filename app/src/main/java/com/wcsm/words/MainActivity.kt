@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             showHideLoading(true)
             showHideViewItens(ShowHideOptions.HIDE)
             binding.btnSearch.isEnabled = false
-            val inputtedWord = binding.wordEditText.text.toString()
+            val inputtedWord = binding.wordEditText.text.toString().replace(" ", "")
             if(validateWord(inputtedWord.lowercase())) {
                 handleKeyboardVisibility(ShowHideOptions.HIDE)
                 getWordData(inputtedWord)
