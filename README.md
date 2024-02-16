@@ -11,8 +11,8 @@ Words é um aplicativo para auxiliar com algumas palavras em inglês, mostrando 
 Vídeo demonstrando o uso do app. Ative o áudio do vídeo para melhor experiencia!
 
 <div align="center">
-  
-https://github.com/WallaceMartinsTI/words/assets/58310961/4019d226-a683-430a-a645-de2be360fdd8
+
+https://github.com/WallaceMartinsTI/Words/assets/58310961/5c94e03e-217f-424b-96a1-c8c08013ae87
 
 </div>
 
